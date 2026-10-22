@@ -1,0 +1,82 @@
+class BankAccount:
+    def __init__(self, account_holder, initial_balance=0.0):
+        self.account_holder = account_holder
+        self.balance = initial_balance
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            print(f"Successfully deposited ${amount:.2f}. New Balance: ${self.balance:.2f}")
+        else:
+            print("❌ Deposit amount must be greater than zero.")
+
+    def withdraw(self, amount):
+        # Check if the account is completely empty
+        if self.balance == 0.0:
+            print("⚠️ Your account is currently empty! You cannot withdraw money.")
+            return
+
+        if amount > 0:
+            if amount <= self.balance:
+                self.balance -= amount
+                print(f"Successfully withdrew ${amount:.2f}. Remaining Balance: ${self.balance:.2f}")
+                
+                # Check if the account just became empty after withdrawal
+                if self.balance == 0.0:
+                    print("⚠️ Note: Your account is now empty ($0.00).")
+            else:
+                print(f"❌ Insufficient funds! You only have ${self.balance:.2f} in your account.")
+        else:
+            print("❌ Withdrawal amount must be greater than zero.")
+
+    def check_balance(self):
+        if self.balance == 0.0:
+            print("⚠️ Your account is currently empty ($0.00).")
+        else:
+            print(f"💰 Current Account Balance: ${self.balance:.2f}")
+
+
+def main():
+    print("=========================================")
+    print("      WELCOME TO THE BANK SYSTEM         ")
+    print("=========================================")
+    
+    name = input("Enter the account holder's name: ")
+    # Starting with an empty account by default
+    account = BankAccount(name, initial_balance=0.0)
+    print(f"\nAccount created for {name} with an initial balance of $0.00.")
+
+    while True:
+        print("\n--- MENU ---")
+        print("1. Check Balance")
+        print("2. Deposit Money")
+        print("3. Withdraw Money")
+        print("4. Exit")
+        
+        choice = input("Enter your choice (1-4): ")
+
+        if choice == '1':
+            account.check_balance()
+            
+        elif choice == '2':
+            try:
+                amount = float(input("Enter amount to deposit: $"))
+                account.deposit(amount)
+            except ValueError:
+                print("❌ Invalid input! Please enter a valid number.")
+                
+        elif choice == '3':
+            try:
+                amount = float(input("Enter amount to withdraw: $"))
+                account.withdraw(amount)
+            except ValueError:
+                print("❌ Invalid input! Please enter a valid number.")
+                
+        elif choice == '4':
+            print("Thank you for using the banking system. Goodbye!")
+            break
+        else:
+            print("❌ Invalid choice! Please select an option between 1 and 4.")
+
+if __name__ == "__main__":
+    main()
